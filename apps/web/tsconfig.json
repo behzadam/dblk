@@ -5,7 +5,11 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/i18n/*": ["i18n/*"]
+    }
   },
   "include": [
     "**/*.ts",
