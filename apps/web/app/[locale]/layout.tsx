@@ -17,7 +17,7 @@ export default async function LocaleLayout({
   }
 
   return (
-    <html lang={locale} dir={getDirection(locale)}>
+    <html lang={locale} dir={getDirection(locale)} suppressHydrationWarning>
       <body className={`${getFontFamily(locale)} font-sans`}>
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>
