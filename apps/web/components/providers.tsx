@@ -1,18 +1,27 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ThemeProvider as NextThemesProvider } from "next-themes"
+import { NextIntlClientProvider } from "next-intl";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+import * as React from "react";
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export function Providers({
+  children,
+  locale,
+}: {
+  children: React.ReactNode;
+  locale: string;
+}) {
   return (
-    <NextThemesProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-      enableColorScheme
-    >
-      {children}
-    </NextThemesProvider>
-  )
+    <NextIntlClientProvider locale={locale}>
+      <NextThemesProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
+        enableColorScheme
+      >
+        {children}
+      </NextThemesProvider>
+    </NextIntlClientProvider>
+  );
 }
