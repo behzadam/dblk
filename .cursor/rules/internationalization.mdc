@@ -1,6 +1,6 @@
 ---
 description: 
-globs: apps/web/**/*.tsx,apps/web/**/*.ts
+globs: apps/web/**/*.ts,apps/web/**/*.tsx
 alwaysApply: false
 ---
 
