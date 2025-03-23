@@ -1,6 +1,6 @@
 ---
 description: 
-globs: **/*.{ts,tsx,js,jsx}
+globs: tsx,js,jsx}
 alwaysApply: false
 ---
 # Code Style Guidelines
