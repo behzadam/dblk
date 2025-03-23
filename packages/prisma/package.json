@@ -1,0 +1,26 @@
+{
+  "name": "@dblk/prisma",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./edge": "./edge.ts",
+    "./client": "./client.ts"
+  },
+  "scripts": {
+    "db:generate": "prisma generate --schema=./schema",
+    "db:push": "prisma db push --schema=./schema",
+    "db:studio": "npx prisma studio --schema=./schema --browser none",
+    "db:format": "npx prisma format --schema=./schema"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "prisma": "^6.5.0",
+    "typescript": "^5.2.2"
+  }
+}

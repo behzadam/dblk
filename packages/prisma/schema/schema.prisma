@@ -1,0 +1,117 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearchPostgres", "prismaSchemaFolder"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  // If you want to use Prisma with PlanetScale, uncomment the below
+  // relationMode = "prisma"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  password  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  links      Link[]
+  workspaces WorkspaceUsers[]
+
+  @@index([email])
+}
+
+model Workspace {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  logo      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  links Link[]
+  users WorkspaceUsers[]
+
+  // Optional features for future expansion
+  domain String? @unique
+
+  @@index([slug])
+}
+
+// Join table for many-to-many relationship between users and workspaces
+model WorkspaceUsers {
+  userId      String
+  workspaceId String
+  role        String   @default("member") // owner, admin, member
+  createdAt   DateTime @default(now())
+
+  // Relations
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@id([userId, workspaceId])
+  @@index([userId])
+  @@index([workspaceId])
+  @@map("WorkspaceUsers")
+}
+
+model Link {
+  id          String   @id @default(cuid())
+  key         String   @unique // Short code for the URL
+  url         String   @db.Text // Original URL
+  title       String?  @db.Text
+  description String?  @db.Text
+  image       String?  @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  clicks      Int      @default(0)
+
+  // Relations
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  // UTM parameters
+  utm_source   String? // UTM source for the link (e.g. youtube.com)
+  utm_medium   String? // UTM medium for the link (e.g. social)
+  utm_campaign String? // UTM campaign for the link (e.g. summer-sale)
+  utm_term     String? // UTM term for the link (e.g. dub)
+  utm_content  String? // UTM content for the link (e.g. description)
+
+  clicks_data Click[]
+
+  // Additional fields for enhanced features
+  expiresAt DateTime?
+  password  String?
+
+  @@index([key])
+  @@index([userId])
+  @@index([workspaceId])
+}
+
+model Click {
+  id        String   @id @default(cuid())
+  linkId    String
+  link      Link     @relation(fields: [linkId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  country   String?
+  city      String?
+  region    String?
+  device    String?
+  browser   String?
+  os        String?
+  referrer  String?  @db.Text
+
+  @@index([linkId])
+  @@index([createdAt])
+}

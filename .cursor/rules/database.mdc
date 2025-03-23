@@ -1,0 +1,10 @@
+---
+description: 
+globs: packages/prisma/**/*.prisma
+alwaysApply: false
+---
+
+# Database
+
+- Use Prsima for Postgresql
+
