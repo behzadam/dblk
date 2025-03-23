@@ -14,7 +14,7 @@
   "dependencies": {
     "@auth/prisma-adapter": "^2.8.0",
     "@dblk/prisma": "workspace:^",
-    "@ui": "workspace:*",
+    "@dblk/ui": "workspace:*",
     "lucide-react": "^0.475.0",
     "next": "^15.2.0",
     "next-auth": "^4.24.11",
@@ -27,8 +27,8 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@workspace/eslint-config": "workspace:^",
-    "@workspace/typescript-config": "workspace:*",
+    "@dblk/eslint-config": "workspace:^",
+    "@dblk/typescript-config": "workspace:*",
     "typescript": "^5.7.3"
   }
 }

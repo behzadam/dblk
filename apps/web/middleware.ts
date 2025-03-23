@@ -43,7 +43,11 @@ export default async function middleware(req: NextRequest) {
   }
 
   // Handle root domain
-  if (!hostname.startsWith("admin.") && !hostname.startsWith("app.")) {
+  if (
+    !hostname.startsWith("admin.") &&
+    !hostname.startsWith("app.") &&
+    !hostname.endsWith("/login")
+  ) {
     // For root domain, redirect to app subdomain
     const subdomain = "app";
     const newUrl = new URL(req.url);
