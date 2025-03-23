@@ -1,22 +1,14 @@
 import { Providers } from "@/components/providers";
 import { getDirection, getFontFamily } from "@/i18n/config";
-import { routing } from "@/i18n/routing";
 import "@workspace/ui/globals.css";
-import { hasLocale } from "next-intl";
-import { notFound } from "next/navigation";
+import { getLocale } from "next-intl/server";
 
-export default async function LocaleLayout({
+export default async function RootLayout({
   children,
-  params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ locale: string }>;
 }) {
-  // Ensure that the incoming `locale` is valid
-  const { locale } = await params;
-  if (!hasLocale(routing.locales, locale)) {
-    notFound();
-  }
+  const locale = await getLocale();
 
   return (
     <html lang={locale} dir={getDirection(locale)} suppressHydrationWarning>
