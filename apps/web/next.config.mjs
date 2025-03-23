@@ -5,6 +5,11 @@ const withNextIntl = createNextIntlPlugin();
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: ["@workspace/ui"],
+  experimental: {
+    serverActions: {
+      allowedOrigins: ["app.localhost:3000", "admin.localhost:3000"],
+    },
+  },
   async rewrites() {
     return {
       beforeFiles: [
