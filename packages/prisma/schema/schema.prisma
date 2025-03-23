@@ -24,6 +24,8 @@ model User {
   // Relations
   links      Link[]
   workspaces WorkspaceUsers[]
+
+  @@index([email])
 }
 
 model Workspace {
