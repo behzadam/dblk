@@ -1,4 +1,4 @@
-import { Button } from "@workspace/ui/components/button";
+import { Button } from "@dblk/ui/components/button";
 import { getTranslations } from "next-intl/server";
 
 export default async function AppPage() {

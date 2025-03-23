@@ -1,6 +1,6 @@
 import { Providers } from "@/components/providers";
 import { getDirection, getFontFamily } from "@/i18n/config";
-import "@workspace/ui/globals.css";
+import "@dblk/ui/globals.css";
 import { getLocale } from "next-intl/server";
 
 export default async function RootLayout({
