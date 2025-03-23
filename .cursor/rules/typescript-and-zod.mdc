@@ -1,0 +1,12 @@
+---
+description: 
+globs: *.tsx,*.ts
+alwaysApply: false
+---
+
+# TypeScript and Zod Usage:
+
+- Use TypeScript for all code; prefer interfaces over types for object shapes.
+- Utilize Zod for schema validation and type inference.
+- Avoid enums; use literal types or maps instead.
+- Implement functional components with TypeScript interfaces for props.

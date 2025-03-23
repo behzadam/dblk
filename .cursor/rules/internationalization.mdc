@@ -1,0 +1,10 @@
+---
+description: 
+globs: apps/web/**/*.tsx,apps/web/**/*.ts
+alwaysApply: false
+---
+
+# Internationalization
+
+- Use i18next and react-i18next for web applications.
+- Ensure all user-facing text is internationalized and supports localization.

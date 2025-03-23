@@ -1,0 +1,10 @@
+---
+description: 
+globs: apps/web/**/*.tsx
+alwaysApply: false
+---
+
+# Performance Optimization
+
+- Implement lazy loading for non-critical components.
+- Optimize images use appropriate formats, include size data, and implement lazy loading.

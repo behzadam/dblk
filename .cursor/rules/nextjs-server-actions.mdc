@@ -1,0 +1,146 @@
+---
+description: 
+globs: apps/web/**/*.tsx,apps/web/**/*.ts
+alwaysApply: false
+---
+
+# Next.js server actions
+
+- Place server actions in a dedicated 'actions' directory within each feature
+- Implement proper type safety using Zod for input validation
+- Use 'use server' directive at the top of server action files
+- Implement proper error handling and return types
+- Use revalidatePath/revalidateTag for cache management
+- Implement optimistic updates on the client side
+- Use formData for form submissions
+- Implement proper loading and error states
+
+## Example structure for server actions:
+
+features/
+└── [feature-name]/
+├── actions/
+│ ├── create.ts
+│ ├── update.ts
+│ └── delete.ts
+├── components/
+│ └── form.tsx
+└── types.ts
+
+```typescript:features/todos/actions/create-todo.ts
+'use server'
+ 
+import { z } from 'zod'
+import { revalidatePath } from 'next/cache'
+import { db } from '@/lib/db'
+import { Result, success, failure } from '@/lib/result'
+import { Todo } from '@prisma/client'
+
+const schema = z.object({
+  title: z.string().min(1).max(255),
+  completed: z.boolean().default(false),
+})
+ 
+export async function createTodo(
+  formData: FormData
+): Promise<Result<Todo>> {
+  try {
+    const validatedFields = schema.parse({
+      title: formData.get('title'),
+      completed: formData.get('completed') === 'true',
+    })
+ 
+    const todo = await db.todo.create({
+      data: validatedFields,
+    })
+ 
+    revalidatePath('/todos')
+    return success(todo)
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return failure('Invalid form data', 'VALIDATION_ERROR')
+    }
+    
+    if (error instanceof PrismaClientKnownRequestError) {
+      return failure('Database error', `DB_${error.code}`)
+    }
+    
+    return failure('Internal server error', 'INTERNAL_ERROR')
+  }
+}
+```
+
+```typescript:features/todos/actions/fetch-todos.ts
+'use server'
+
+import { z } from 'zod'
+import { db } from '@/lib/db'
+import { Result } from '@/lib/result'
+import { Todo } from '@prisma/client'
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
+
+const querySchema = z.object({
+  page: z.number().int().positive().default(1),
+  limit: z.number().int().positive().max(100).default(10),
+  status: z.enum(['all', 'completed', 'active']).default('all'),
+  search: z.string().optional(),
+})
+
+type QueryParams = z.infer<typeof querySchema>
+
+interface TodosResponse {
+  todos: Todo[]
+  total: number
+  hasMore: boolean
+}
+
+export async function fetchTodos(
+  params: Partial<QueryParams>
+): Promise<Result<TodosResponse>> {
+  try {
+    const { page, limit, status, search } = querySchema.parse(params)
+    const skip = (page - 1) * limit
+
+    // Build where clause
+    const where = {
+      AND: [
+        // Status filter
+        status === 'all'
+          ? {}
+          : { completed: status === 'completed' },
+        // Search filter
+        search
+          ? { title: { contains: search, mode: 'insensitive' } }
+          : {},
+      ],
+    }
+
+    // Execute queries in parallel
+    const [todos, total] = await Promise.all([
+      db.todo.findMany({
+        where,
+        skip,
+        take: limit,
+        orderBy: { createdAt: 'desc' },
+      }),
+      db.todo.count({ where }),
+    ])
+
+    return Result.success({
+      todos,
+      total,
+      hasMore: skip + todos.length < total,
+    })
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return Result.failure('Invalid query parameters', 'VALIDATION_ERROR')
+    }
+
+    if (error instanceof PrismaClientKnownRequestError) {
+      return Result.failure('Database error', `DB_${error.code}`)
+    }
+
+    return Result.failure('Failed to fetch todos', 'INTERNAL_ERROR')
+  }
+}
+```
