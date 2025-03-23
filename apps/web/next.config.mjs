@@ -4,7 +4,7 @@ const withNextIntl = createNextIntlPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ["@workspace/ui"],
+  transpilePackages: ["@dblk/ui"],
   experimental: {
     serverActions: {
       allowedOrigins: ["app.localhost:3000", "admin.localhost:3000"],
