@@ -23,11 +23,11 @@ export const Basic: Story = {
   render: () => (
     <Card className="w-[350px]">
       <CardHeader>
-        <CardTitle>Card Title</CardTitle>
-        <CardDescription>Card description goes here</CardDescription>
+        <CardTitle>عنوان کارت</CardTitle>
+        <CardDescription>توضیحات کارت در اینجا قرار می‌گیرد</CardDescription>
       </CardHeader>
       <CardContent>
-        <p>Card content with some example text.</p>
+        <p>محتوای کارت با متن نمونه.</p>
       </CardContent>
     </Card>
   ),
@@ -37,16 +37,16 @@ export const WithAction: Story = {
   render: () => (
     <Card className="w-[350px]">
       <CardHeader>
-        <CardTitle>Card with Action</CardTitle>
-        <CardDescription>Card with an action button</CardDescription>
+        <CardTitle>کارت با دکمه عملیات</CardTitle>
+        <CardDescription>کارت با یک دکمه عملیات</CardDescription>
         <CardAction>
           <Button variant="outline" size="sm">
-            Action
+            عملیات
           </Button>
         </CardAction>
       </CardHeader>
       <CardContent>
-        <p>Card content with some example text.</p>
+        <p>محتوای کارت با متن نمونه.</p>
       </CardContent>
     </Card>
   ),
@@ -56,14 +56,14 @@ export const WithFooter: Story = {
   render: () => (
     <Card className="w-[350px]">
       <CardHeader>
-        <CardTitle>Card with Footer</CardTitle>
-        <CardDescription>This card includes a footer section</CardDescription>
+        <CardTitle>کارت با پاورقی</CardTitle>
+        <CardDescription>این کارت شامل بخش پاورقی است</CardDescription>
       </CardHeader>
       <CardContent>
-        <p>Card content with some example text.</p>
+        <p>محتوای کارت با متن نمونه.</p>
       </CardContent>
       <CardFooter>
-        <Button>Save Changes</Button>
+        <Button>ذخیره تغییرات</Button>
       </CardFooter>
     </Card>
   ),
@@ -73,23 +73,23 @@ export const FullExample: Story = {
   render: () => (
     <Card className="w-[350px]">
       <CardHeader>
-        <CardTitle>Complete Card</CardTitle>
-        <CardDescription>Shows all card components together</CardDescription>
+        <CardTitle>کارت کامل</CardTitle>
+        <CardDescription>نمایش تمام اجزای کارت با هم</CardDescription>
         <CardAction>
           <Button variant="outline" size="sm">
-            Edit
+            ویرایش
           </Button>
         </CardAction>
       </CardHeader>
       <CardContent>
         <p>
-          This example shows a complete card with all available components
-          including header with action, content, and footer.
+          این مثال یک کارت کامل را با تمام اجزای موجود شامل سربرگ با دکمه
+          عملیات، محتوا و پاورقی نشان می‌دهد.
         </p>
       </CardContent>
       <CardFooter className="justify-between">
-        <Button variant="outline">Cancel</Button>
-        <Button>Submit</Button>
+        <Button variant="outline">لغو</Button>
+        <Button>ثبت</Button>
       </CardFooter>
     </Card>
   ),
