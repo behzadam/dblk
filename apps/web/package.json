@@ -14,7 +14,8 @@
     "db:generate": "dotenv-flow -e .env -- pnpm --filter=@dblk/prisma generate",
     "db:push": "dotenv-flow -e .env -- pnpm --filter=@dblk/prisma push",
     "db:studio": "dotenv-flow -e .env -- pnpm --filter=@dblk/prisma studio",
-    "db:format": "dotenv-flow -e .env -- pnpm --filter=@dblk/prisma format"
+    "db:format": "dotenv-flow -e .env -- pnpm --filter=@dblk/prisma format",
+    "db:migrate": "dotenv-flow -e .env -- pnpm --filter=@dblk/prisma migrate"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.8.0",
