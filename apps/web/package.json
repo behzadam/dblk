@@ -4,28 +4,41 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
+    "dev": "concurrently --kill-others \"pnpm db:generate && next dev --turbo --port 3000\" \"pnpm db:generate && pnpm db:studio --browser none\"",
+    "build": "pnpm db:generate && next build",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "pnpm db:generate && vitest -no-file-parallelism --bail=1",
+    "db:generate": "dotenv-flow -e .env -- pnpm --filter=@dblk/prisma generate",
+    "db:push": "dotenv-flow -e .env -- pnpm --filter=@dblk/prisma push",
+    "db:studio": "dotenv-flow -e .env -- pnpm --filter=@dblk/prisma studio",
+    "db:format": "dotenv-flow -e .env -- pnpm --filter=@dblk/prisma format",
+    "db:migrate": "dotenv-flow -e .env -- pnpm --filter=@dblk/prisma migrate"
   },
   "dependencies": {
-    "@workspace/ui": "workspace:*",
+    "@auth/prisma-adapter": "^2.8.0",
+    "@dblk/prisma": "workspace:^",
+    "@dblk/ui": "workspace:*",
+    "@prisma/client": "^6.5.0",
     "lucide-react": "^0.475.0",
     "next": "^15.2.0",
+    "next-auth": "^4.24.11",
     "next-intl": "^4.0.2",
     "next-themes": "^0.4.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@dblk/eslint-config": "workspace:^",
+    "@dblk/typescript-config": "workspace:*",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@workspace/eslint-config": "workspace:^",
-    "@workspace/typescript-config": "workspace:*",
+    "concurrently": "^9.1.2",
+    "dotenv-flow": "^4.1.0",
+    "dotenv-flow-cli": "^1.1.1",
     "typescript": "^5.7.3"
   }
 }

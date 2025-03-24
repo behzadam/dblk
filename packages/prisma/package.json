@@ -10,10 +10,11 @@
     "./client": "./client.ts"
   },
   "scripts": {
-    "db:generate": "prisma generate --schema=./schema",
-    "db:push": "prisma db push --schema=./schema",
-    "db:studio": "npx prisma studio --schema=./schema --browser none",
-    "db:format": "npx prisma format --schema=./schema"
+    "generate": "prisma generate --schema=./schema",
+    "push": "prisma db push --schema=./schema",
+    "studio": "npx prisma studio --schema=./schema --browser none",
+    "format": "npx prisma format --schema=./schema",
+    "migrate": "prisma migrate dev --schema=./schema"
   },
   "dependencies": {
     "@prisma/client": "^6.5.0"

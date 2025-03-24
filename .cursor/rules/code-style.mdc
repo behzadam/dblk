@@ -1,10 +1,9 @@
 ---
 description: 
-globs: **/*.{ts,tsx,js,jsx}
+globs: tsx,js,jsx}
 alwaysApply: false
 ---
 # Code Style Guidelines
-Applies to: **/*.{ts,tsx,js,jsx}
 
 Follow these code style conventions:
 
