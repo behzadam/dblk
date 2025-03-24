@@ -44,7 +44,7 @@ export const authOptions: NextAuthOptions = {
           name: profile.name || null,
           email: profile.email,
           image: profile.picture || null,
-          emailVerified: profile.email_verified || false,
+          emailVerified: profile.email_verified ? new Date() : null,
         };
       },
     }),
