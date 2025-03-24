@@ -34,7 +34,6 @@ export const authOptions: NextAuthOptions = {
         },
       },
       profile(profile) {
-        console.log("PProfile", profile);
         // Add proper error handling and type checking
         if (!profile || !profile.email) {
           throw new Error("Invalid profile data received from Google");
@@ -45,7 +44,7 @@ export const authOptions: NextAuthOptions = {
           name: profile.name || null,
           email: profile.email,
           image: profile.picture || null,
-          email_verified: profile.email_verified || false,
+          emailVerified: profile.email_verified || false,
         };
       },
     }),
@@ -91,11 +90,13 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      session.user = {
-        id: token.sub,
-        // @ts-ignore
-        ...(token || session).user,
-      };
+      if (session.user) {
+        session.user = {
+          id: token.sub,
+          // @ts-ignore
+          ...(token || session).user,
+        };
+      }
       return session;
     },
   },
