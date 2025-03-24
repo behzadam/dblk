@@ -1,11 +1,7 @@
-import { UserProps } from "@/types/user";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@dblk/prisma";
 import { PrismaClient } from "@dblk/prisma/client";
-import { NextAuthOptions, User } from "next-auth";
-import { AdapterUser } from "next-auth/adapters";
-import { JWT } from "next-auth/jwt";
-import GithubProvider from "next-auth/providers/github";
+import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
 const CustomPrismaAdapter = (p: PrismaClient) => {
@@ -26,6 +22,7 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      allowDangerousEmailAccountLinking: true,
       authorization: {
         params: {
           prompt: "consent",
@@ -38,7 +35,6 @@ export const authOptions: NextAuthOptions = {
         if (!profile || !profile.email) {
           throw new Error("Invalid profile data received from Google");
         }
-
         return {
           id: profile.sub,
           name: profile.name || null,
@@ -47,11 +43,6 @@ export const authOptions: NextAuthOptions = {
           emailVerified: profile.email_verified ? new Date() : null,
         };
       },
-    }),
-    GithubProvider({
-      clientId: process.env.GITHUB_CLIENT_ID as string,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
-      allowDangerousEmailAccountLinking: true,
     }),
   ],
   callbacks: {
@@ -85,15 +76,7 @@ export const authOptions: NextAuthOptions = {
 
       return true;
     },
-    jwt: async ({
-      token,
-      user,
-      trigger,
-    }: {
-      token: JWT;
-      user: User | AdapterUser | UserProps;
-      trigger?: "signIn" | "update" | "signUp";
-    }) => {
+    jwt: async ({ token, user, trigger }) => {
       if (user) {
         token.user = user;
       }
@@ -109,7 +92,6 @@ export const authOptions: NextAuthOptions = {
           return {};
         }
       }
-
       return token;
     },
     async session({ session, token }) {
@@ -130,24 +112,5 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
-  cookies: {
-    sessionToken: {
-      name: `${process.env.NEXT_PUBLIC_APP_DOMAIN ? "__Secure-" : ""}next-auth.session-token`,
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        // When working on localhost, the cookie domain must be omitted entirely (https://stackoverflow.com/a/1188145)
-        // Only set domain for non-localhost environments
-        ...(process.env.NEXT_PUBLIC_APP_DOMAIN &&
-        process.env.NEXT_PUBLIC_APP_DOMAIN !== "localhost"
-          ? { domain: `.${process.env.NEXT_PUBLIC_APP_DOMAIN}` }
-          : {}),
-        // Secure should be true in production/when using HTTPS
-        secure:
-          process.env.NODE_ENV === "production" ||
-          process.env.NEXT_PUBLIC_APP_DOMAIN !== "localhost",
-      },
-    },
-  },
+  secret: process.env.NEXTAUTH_SECRET as string,
 };
