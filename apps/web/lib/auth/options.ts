@@ -60,6 +60,29 @@ export const authOptions: NextAuthOptions = {
         return false;
       }
 
+      if (account?.provider === "google" || account?.provider === "github") {
+        const userExists = await prisma.user.findUnique({
+          where: { email: user.email },
+          select: {
+            id: true,
+            name: true,
+          },
+        });
+
+        if (!userExists || !profile) {
+          return true;
+        }
+
+        if (userExists) {
+          await prisma.user.update({
+            where: { id: userExists.id },
+            data: {
+              name: profile.name,
+            },
+          });
+        }
+      }
+
       return true;
     },
     jwt: async ({
