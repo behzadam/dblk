@@ -1,17 +1,15 @@
 "use client";
 import { Button } from "@dblk/ui/components/button";
-import { signOut } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
 export default function SignOut() {
   return (
     <Button
-      onClick={() =>
-        signOut({
-          callbackUrl: "/login",
-        })
-      }
+      onClick={async () => {
+        await signIn("google");
+      }}
     >
-      Sign Out
+      Sign In
     </Button>
   );
 }
