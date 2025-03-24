@@ -1,11 +1,14 @@
 import * as React from "react";
 
 import { cn } from "@dblk/ui/lib/utils";
+import { useDirection } from "../hooks/use-direction.js";
 
 function Card({ className, ...props }: React.ComponentProps<"div">) {
+  const dir = useDirection();
   return (
     <div
       data-slot="card"
+      dir={dir}
       className={cn(
         "bg-card text-card-foreground flex flex-col gap-6 rounded-md border py-6",
         className
@@ -32,7 +35,7 @@ function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-title"
-      className={cn("leading-none font-semibold", className)}
+      className={cn("leading-none font-semibold text-base", className)}
       {...props}
     />
   );
