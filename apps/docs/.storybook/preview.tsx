@@ -1,4 +1,5 @@
 import "@dblk/ui/globals.css";
+import "@dblk/ui/typography.css";
 import type { Preview } from "@storybook/react";
 
 const preview: Preview = {
