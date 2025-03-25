@@ -1,9 +1,0 @@
----
-description: 
-globs: apps/web/**/*.ts
-alwaysApply: false
----
-
-# Testing and Quality Assurance
-
-- Write unit and integration tests for critical components.
