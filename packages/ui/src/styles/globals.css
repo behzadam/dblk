@@ -124,3 +124,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+[data-sonner-toaster],
+[data-sonner-toast] {
+  font-family: inherit !important;
+}
