@@ -3,7 +3,6 @@
 
 @import "tw-animate-css";
 
-
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -44,6 +43,7 @@
 
 .dark {
   --background: oklch(0.145 0 0);
+  --body: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.145 0 0);
   --card-foreground: oklch(0.985 0 0);
